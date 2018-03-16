@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
 
 #define PROMPT "lambda-shell$ "
 
@@ -82,6 +83,16 @@ int main(void)
         if (args_count == 0) {
             // If the user entered no commands, do nothing
             continue;
+        }
+
+        pid_t pid = fork();
+        if(pid == -1) {
+            printf("Failed to fork \n");
+        } else if(pid > 0) {
+            int status;
+            waitpid(pid, &status, 0); //parent
+        } else {
+            execvp(args[0], &args[0]);
         }
 
         // Exit the shell if args[0] is the built-in "exit" command
