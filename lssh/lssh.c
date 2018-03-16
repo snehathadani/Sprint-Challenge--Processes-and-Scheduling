@@ -85,6 +85,13 @@ int main(void)
             continue;
         }
 
+
+
+        // Exit the shell if args[0] is the built-in "exit" command
+        if (strcmp(args[0], "exit") == 0) {
+            break;
+        }
+
         pid_t pid = fork();
         if(pid == -1) {
             printf("Failed to fork \n");
@@ -94,12 +101,7 @@ int main(void)
         } else {
             execvp(args[0], &args[0]);
         }
-
-        // Exit the shell if args[0] is the built-in "exit" command
-        if (strcmp(args[0], "exit") == 0) {
-            break;
-        }
-
+        
         #if DEBUG
 
         // Some debugging output
