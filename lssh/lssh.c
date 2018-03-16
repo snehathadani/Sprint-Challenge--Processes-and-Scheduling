@@ -92,6 +92,13 @@ int main(void)
             break;
         }
 
+        if (strcmp(args[0], "cd") == 0) {
+            if(chdir(args[1]) == -1)  {
+              printf("Failed to chdir to %s\n", args[1]);
+            } 
+            continue;
+        }
+
         pid_t pid = fork();
         if(pid == -1) {
             printf("Failed to fork \n");
@@ -101,7 +108,7 @@ int main(void)
         } else {
             execvp(args[0], &args[0]);
         }
-        
+
         #if DEBUG
 
         // Some debugging output
